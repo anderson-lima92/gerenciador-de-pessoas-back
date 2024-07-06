@@ -1,11 +1,15 @@
 package com.lima.api.gerenciador.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.lima.api.gerenciador.dto.PessoaDTO;
@@ -21,11 +25,6 @@ public class PessoaController {
 
 	@Autowired
 	private PessoaService pessoaService;
-	
-	@GetMapping
-	public String home() {
-	    return "index";
-	}
 
 	@PostMapping("/pessoas")
 	public ResponseEntity<Object> createPessoa(@RequestBody PessoaDTO pessoa) {
@@ -37,4 +36,23 @@ public class PessoaController {
 		}
 	}
 
+	@GetMapping("/pessoas/{cpf}")
+	public ResponseEntity<?> buscarPessoaPorCpf(@PathVariable("cpf") Long cpf) {
+		try {
+			Optional<Pessoa> pessoa = pessoaService.consultarPessoa(cpf);
+			return ResponseEntity.status(HttpStatus.OK).body(pessoa);
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+		}
+	}
+
+	@PutMapping("/pessoas/{cpf}")
+	public ResponseEntity<Object> updatePessoaPorCpf(@PathVariable("cpf") Long cpf, @RequestBody PessoaDTO update) {
+		try {
+			pessoaService.atualizarPessoa(cpf, update);
+			return ResponseEntity.status(HttpStatus.OK).body("Dados atualizados com sucesso!");
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+		}
+	}
 }

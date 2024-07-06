@@ -50,20 +50,79 @@ public class PessoaService {
 				for (int i = 1; i < enderecos.size(); i++) {
 					enderecos.get(i).setEnderecoPrincipal(false);
 				}
+
 				pessoa.setEnderecos(enderecos);
 			}
 
 			validaCpf(pessoa.getCpf());
 			validaEnderecos(pessoa);
+
 			String dataNascimento = validaDataNascimento(pessoa.getDataNascimento());
+
 			pessoa.setDataNascimento(dataNascimento);
+			
 			pessoa.setAtivo(true);
+
 			Pessoa pessoaSalva = pessoaRepository.save(pessoa);
 			
 			return pessoaSalva;
 
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao salvar pessoa: " + e.getMessage());
+		}
+	}
+
+	public Optional<Pessoa> consultarPessoa(Long cpf) {
+
+		log.info("....................Buscando Pessoa....................");
+
+		try {
+
+			validaCpf(cpf);
+
+			Optional<Pessoa> pessoaEncontrada = pessoaRepository.findByCpf(cpf);
+
+			return pessoaEncontrada;
+
+		} catch (Exception e) {
+			throw new RuntimeException("Erro ao buscar pessoa: " + e.getMessage());
+		}
+	}
+
+	public void atualizarPessoa(Long cpf, PessoaDTO update) {
+
+		log.info("....................Atualaizando Dados....................");
+
+		try {
+
+			validaCpf(cpf);
+
+			Optional<Pessoa> pessoaEncontrada = pessoaRepository.findByCpf(cpf);
+
+			if (pessoaEncontrada.isPresent()) {
+				Pessoa pessoa = pessoaEncontrada.get();
+				pessoa.setNome(update.getNome());
+
+				String dataNascimento = validaDataNascimento(update.getDataNascimento());
+
+				pessoa.setDataNascimento(dataNascimento);
+
+				pessoa.setEnderecos(update.getEnderecos());
+
+				validaEnderecos(pessoa);
+				
+				pessoa.setAtivo(true);
+
+				pessoaRepository.save(pessoa);
+
+				log.info("....................Dados Atualizados com sucesso!....................");
+
+			} else {
+				throw new IllegalArgumentException("CPF (" + cpf + ") não encontrado.");
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException("Erro ao atualizar dados da pessoa: " + e.getMessage());
 		}
 	}
 
