@@ -1,4 +1,4 @@
-package com.lima.api.gerenciador.config;
+package com.lima.api.gerenciador.config.cors;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
