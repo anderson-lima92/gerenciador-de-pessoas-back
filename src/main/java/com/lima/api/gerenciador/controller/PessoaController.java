@@ -1,11 +1,13 @@
 package com.lima.api.gerenciador.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,5 +56,35 @@ public class PessoaController {
 		} catch (RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
 		}
+	}
+	
+	@DeleteMapping("/pessoas/desativacao/{cpf}")
+	public ResponseEntity<Object> desativaPessoaPorCpf(@PathVariable("cpf") Long cpf) {
+		try {
+			pessoaService.desativaPessoa(cpf);
+			return ResponseEntity.status(HttpStatus.OK).body("Desativado com sucesso!");
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+		}
+	}
+
+	@DeleteMapping("/pessoas/{cpf}")
+	public ResponseEntity<Object> deletePessoaPorCpf(@PathVariable("cpf") Long cpf) {
+		try {
+			pessoaService.deletarPessoa(cpf);
+			return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso!");
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+		}
+	}
+	
+	@GetMapping("/pessoas/lista-pessoas")
+	public ResponseEntity<Object> ListaPessoas() {
+	    try {
+	        List<Pessoa> pessoas = pessoaService.listarTodasPessoas();
+	        return ResponseEntity.status(HttpStatus.OK).body(pessoas);
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+	    }
 	}
 }

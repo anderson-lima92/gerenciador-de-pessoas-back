@@ -125,6 +125,61 @@ public class PessoaService {
 			throw new RuntimeException("Erro ao atualizar dados da pessoa: " + e.getMessage());
 		}
 	}
+	
+	public void desativaPessoa(Long cpf) {
+
+		log.info("....................Desativando Pessoa....................");
+
+		try {
+
+			validaCpf(cpf);
+
+			Optional<Pessoa> pessoaOpt = pessoaRepository.findByCpf(cpf);
+
+			if (pessoaOpt.isPresent()) {
+	            Pessoa pessoa = pessoaOpt.get();
+	            if(!pessoa.isAtivo()) {
+	            	throw new RuntimeException("Pessoa já está Desativado(a)");
+	            } 
+	            
+	            pessoa.setAtivo(false);
+	            
+	            pessoaRepository.save(pessoa);
+			}
+
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Atenção: " + e.getMessage());
+		}
+	}
+
+	public void deletarPessoa(Long cpf) {
+
+		log.info("....................Removendo Pessoa....................");
+
+		try {
+
+			validaCpf(cpf);
+
+			Optional<Pessoa> pessoa = pessoaRepository.findByCpf(cpf);
+
+			if (pessoa.isPresent()) {
+				pessoaRepository.deleteById(pessoa.get().getId());
+			}
+
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Erro ao deletar pessoa: " + e.getMessage());
+		}
+	}
+
+	public List<Pessoa> listarTodasPessoas() {
+	    List<Pessoa> pessoas = pessoaRepository.findAll();
+	    
+	    if (pessoas.isEmpty()) {
+	        throw new RuntimeException("Não há dados para listar!");
+	    }
+	    
+	    return pessoas;
+	}
 
 	private void validaCpf(Long cpf) {
 		if (String.valueOf(cpf).length() != 11) {
