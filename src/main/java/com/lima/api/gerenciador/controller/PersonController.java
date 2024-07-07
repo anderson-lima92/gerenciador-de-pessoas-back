@@ -30,7 +30,7 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @PostMapping("/pessoas")
+    @PostMapping("/persons")
     public ResponseEntity<Object> createPerson(@RequestBody PersonDTO person) {
         log.info("Request to create person received: {}", person.getName());
         try {
@@ -43,7 +43,7 @@ public class PersonController {
         }
     }
 
-    @GetMapping("/pessoas/{cpf}")
+    @GetMapping("/persons/{cpf}")
     public ResponseEntity<?> getPersonByCpf(@PathVariable("cpf") Long cpf) {
         log.info("Request to get person by CPF received");
         try {
@@ -56,7 +56,7 @@ public class PersonController {
         }
     }
 
-    @PutMapping("/pessoas/{cpf}")
+    @PutMapping("/persons/{cpf}")
     public ResponseEntity<Object> updatePersonByCpf(@PathVariable("cpf") Long cpf, @RequestBody PersonDTO update) {
         log.info("Request to update person received for CPF informed.");
         try {
@@ -69,7 +69,7 @@ public class PersonController {
         }
     }
 
-    @DeleteMapping("/pessoas/desativacao/{cpf}")
+    @DeleteMapping("/persons/deactivation/{cpf}")
     public ResponseEntity<Object> deactivatePersonByCpf(@PathVariable("cpf") Long cpf) {
         log.info("Request to deactivate person received for CPF informed.");
         try {
@@ -82,7 +82,7 @@ public class PersonController {
         }
     }
 
-    @DeleteMapping("/pessoas/{cpf}")
+    @DeleteMapping("/persons/{cpf}")
     public ResponseEntity<Object> deletePersonByCpf(@PathVariable("cpf") Long cpf) {
         log.info("Request to delete person received for CPF informed.");
         try {
@@ -95,7 +95,7 @@ public class PersonController {
         }
     }
 
-    @GetMapping("/pessoas/lista-pessoas")
+    @GetMapping("/persons/list-persons")
     public ResponseEntity<Object> listPeople() {
         log.info("Request to list all people received");
         try {
