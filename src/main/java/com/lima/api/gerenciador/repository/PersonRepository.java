@@ -6,15 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
-import com.lima.api.gerenciador.model.Pessoa;
+import com.lima.api.gerenciador.model.Person;
 
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
-	Optional<Pessoa> findByCpf(Long cpf);
+public interface PersonRepository extends JpaRepository<Person, Long> {
+	Optional<Person> findByCpf(Long cpf);
 
-	Pessoa findEnderecoPrincipalByCpf(Long cpf);
+	Person findPrimaryAddressByCpf(Long cpf);
 	
     @Modifying
     @Transactional

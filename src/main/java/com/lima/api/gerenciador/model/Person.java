@@ -1,7 +1,5 @@
 package com.lima.api.gerenciador.model;
 
-
-
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -22,35 +20,34 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "pessoa")
+@Table(name = "person")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Pessoa {
+public class Person {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "nome", nullable = false)
-	private String nome;
-	
-	@Column(name = "cpf", nullable = false)
-	private Long cpf;
-	
-	@Column(name = "ativo", nullable = false)
-	private boolean ativo;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	@Column(name = "data_nascimento", nullable = false)
-	private String dataNascimento;
+    @Column(name = "cpf", nullable = false)
+    private Long cpf;
 
-	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
-	@OrderBy("enderecoPrincipal DESC")
-	private List<Endereco> enderecos;
-	
-    public boolean isAtivo() {
-    	return this.ativo;
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
+    @Column(name = "birth_date", nullable = false)
+    private String birthDate;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OrderBy("primaryAddress DESC")
+    private List<Address> addresses;
+
+    public boolean isActive() {
+        return this.active;
     }
-
 }
