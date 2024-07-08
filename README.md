@@ -16,6 +16,8 @@ A API tem como objetivo gerenciar pessoas e seus endereços. As funcionalidades 
 - JWT
 - Banco de dados H2
 - Swagger com SpringDoc OpenAPI 3
+- JUnit
+- Mockito
 
 ## Configuração do Projeto
 
